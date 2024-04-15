@@ -1,0 +1,1 @@
+savedcmd_/home/smellon/Projects/shstk/kernel_modules/modules.order := {   echo /home/smellon/Projects/shstk/kernel_modules/shstk_status.o; :; } > /home/smellon/Projects/shstk/kernel_modules/modules.order

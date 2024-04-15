@@ -1,0 +1,1 @@
+savedcmd_/home/smellon/Projects/shstk/kernel_modules/Module.symvers :=  scripts/mod/modpost -M  -a    -N  -o /home/smellon/Projects/shstk/kernel_modules/Module.symvers -T /home/smellon/Projects/shstk/kernel_modules/modules.order -i Module.symvers -e 

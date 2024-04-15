@@ -1,0 +1,1 @@
+savedcmd_/home/smellon/Projects/shstk/kernel_modules/shstk_status.mod := printf '%s\n'   shstk_status.o | awk '!x[$$0]++ { print("/home/smellon/Projects/shstk/kernel_modules/"$$0) }' > /home/smellon/Projects/shstk/kernel_modules/shstk_status.mod

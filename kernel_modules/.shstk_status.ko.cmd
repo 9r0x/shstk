@@ -1,0 +1,1 @@
+savedcmd_/home/smellon/Projects/shstk/kernel_modules/shstk_status.ko := ld -r -m elf_x86_64 -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T scripts/module.lds -o /home/smellon/Projects/shstk/kernel_modules/shstk_status.ko /home/smellon/Projects/shstk/kernel_modules/shstk_status.o /home/smellon/Projects/shstk/kernel_modules/shstk_status.mod.o
