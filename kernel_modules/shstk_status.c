@@ -90,7 +90,7 @@ static int debugfs_init(void)
         return -ENODEV;
     }
 
-    status_dev = debugfs_create_file("data", 0600, root_dir, NULL, &data_fops);
+    status_dev = debugfs_create_file("status", 0600, root_dir, NULL, &data_fops);
     if (!status_dev)
     {
         printk(KERN_ERR "Failed to create debugfs file\n");

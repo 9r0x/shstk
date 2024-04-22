@@ -19,7 +19,7 @@ int main()
     unsigned long long ssp = 0;
     READSSP(ssp);
     printf("main: rdssp returned 0x%016llx\n", ssp);
-    // foo();
+    foo();
     ssp = 0;
     READSSP(ssp);
     printf("main: rdssp returned 0x%016llx\n", ssp);
