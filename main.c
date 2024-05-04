@@ -10,6 +10,7 @@ int main()
 
 // https://elixir.bootlin.com/linux/latest/source/arch/x86/include/uapi/asm/prctl.h#L33
 #define ARCH_SHSTK_ENABLE 0x5001
+#define ARCH_SHSTK_UNLOCK 0x5004
 #define ARCH_SHSTK_STATUS 0x5005
 
 #define ARCH_SHSTK_SHSTK (1ULL << 0)
@@ -19,11 +20,19 @@ int main()
     printf("arch_prctl(ARCH_SHSTK_STATUS, &features) returned %d\n", ret);
     printf("features = %lx\n", features);
 
-    ret = syscall(SYS_arch_prctl, ARCH_SHSTK_ENABLE, ARCH_SHSTK_SHSTK);
+    ret = syscall(SYS_arch_prctl, ARCH_SHSTK_UNLOCK, ARCH_SHSTK_WRSS);
+    printf("arch_prctl(ARCH_SHSTK_UNLOCK, ARCH_SHSTK_WRSS) returned %d\n", ret);
+
+    /* ret = syscall(SYS_arch_prctl, ARCH_SHSTK_ENABLE, ARCH_SHSTK_SHSTK);
     printf("arch_prctl(ARCH_SHSTK_ENABLE, ARCH_SHSTK_SHSTK) returned %d\n", ret);
 
-    // ret = syscall(SYS_arch_prctl, ARCH_SHSTK_ENABLE, ARCH_SHSTK_WRSS);
-    // printf("arch_prctl(ARCH_SHSTK_ENABLE, ARCH_SHSTK_WRSS) returned %d\n", ret);
+    ret = syscall(SYS_arch_prctl, ARCH_SHSTK_ENABLE, ARCH_SHSTK_WRSS);
+    printf("arch_prctl(ARCH_SHSTK_ENABLE, ARCH_SHSTK_WRSS) returned %d\n", ret); */
+
+    while (1)
+    {
+        sleep(1);
+    }
 
     return 0;
 }

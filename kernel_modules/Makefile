@@ -5,6 +5,9 @@ KERNEL_BUILD = /lib/modules/$(shell uname -r)/build
 # Command to build the module
 obj-m += $(MODULE_NAME).o
 
+EXTRA_CFLAGS += -mshstk
+EXTRA_LDFLAGS += -Wl,-z,shstk
+
 all:
 	$(MAKE) -C $(KERNEL_BUILD) M=$(PWD) modules
 

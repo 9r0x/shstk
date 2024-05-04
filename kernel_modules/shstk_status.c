@@ -8,6 +8,8 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Shukai Ni");
 MODULE_DESCRIPTION("A simple Linux driver to read shstk related status.");
 
+#define READSSP(val) __asm__ volatile("rdsspq %0" : "=r"(val) : :);
+
 static void print_cr4_cet(void)
 {
     unsigned long cr4_value;
@@ -46,10 +48,23 @@ static void print_IA32_U_CET(void)
     printk(KERN_INFO "IA32_U_CET: %lx\n", IA32_U_CET);
 }
 
+static void foo(void)
+{
+    unsigned long long ssp2 = 0;
+    READSSP(ssp2);
+    printk(KERN_INFO "foo: rdssp returned 0x%016llx\n", ssp2);
+}
+
 static ssize_t
 write_data(struct file *f, const char __user *buf, size_t count, loff_t *off)
 {
     printk(KERN_INFO "write_data\n");
+    unsigned long long ssp = 0;
+    READSSP(ssp);
+    printk(KERN_INFO "ssp: 0x%016llx\n", ssp);
+    foo();
+    READSSP(ssp);
+    printk(KERN_INFO "ssp: 0x%016llx\n", ssp);
     return count;
 }
 

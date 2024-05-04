@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 1024
+
+int main()
+{
+    char device_path[256] = "/sys/kernel/debug/shstk_status/status";
+    char buffer[BUFFER_SIZE] = "Hello, world!";
+    int bytes_read;
+
+    int fd = open(device_path, O_WRONLY);
+    if (fd == -1)
+    {
+        perror("Error opening file");
+        return EXIT_FAILURE;
+    }
+
+    bytes_read = write(fd, buffer, BUFFER_SIZE);
+    if (bytes_read == -1)
+    {
+        perror("Error writing from file");
+        close(fd);
+        return EXIT_FAILURE;
+    }
+
+    close(fd);
+    return EXIT_SUCCESS;
+}

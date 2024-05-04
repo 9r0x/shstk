@@ -1,6 +1,6 @@
 CC=gcc
 #-Wall -O3 -ggdb3 -march=native -mtune 
-CFLAGS=-mshstk
+CFLAGS=-mshstk -g
 LDFLAGS=-Wl,-z,shstk
 
 ifeq ($(debug), 1)
