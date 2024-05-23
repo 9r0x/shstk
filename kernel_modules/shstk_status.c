@@ -9,6 +9,7 @@ MODULE_AUTHOR("Shukai Ni");
 MODULE_DESCRIPTION("A simple Linux driver to read shstk related status.");
 
 #define READSSP(val) __asm__ volatile("rdsspq %0" : "=r"(val) : :);
+#define WRUSSQ(val, addr) __asm__ volatile("wrussq %0, %1" : : "r"(val), "m"(addr) :);
 
 static void print_cr4_cet(void)
 {
@@ -59,12 +60,33 @@ static ssize_t
 write_data(struct file *f, const char __user *buf, size_t count, loff_t *off)
 {
     printk(KERN_INFO "write_data\n");
-    unsigned long long ssp = 0;
-    READSSP(ssp);
+
+    // Configure SMAP with stac and clac
+    // Note: this is not necessary
+    asm volatile("clac");
+
+    unsigned long long ssp;
+    unsigned long long addr;
+    if (copy_from_user(&ssp, buf, sizeof(ssp)))
+    {
+        printk(KERN_ERR "Failed to copy_from_user\n");
+        return -EFAULT;
+    }
+
     printk(KERN_INFO "ssp: 0x%016llx\n", ssp);
-    foo();
-    READSSP(ssp);
-    printk(KERN_INFO "ssp: 0x%016llx\n", ssp);
+
+    // Assume one-page ssp buffer, print until the end of the page
+    while (ssp % 0x1000 != 0)
+    {
+        if (copy_from_user(&addr, (char *)ssp, sizeof(addr)))
+        {
+            printk(KERN_ERR "Failed to copy_from_user(SSP)\n");
+            return -EFAULT;
+        }
+        printk(KERN_INFO "value at ssp: 0x%016llx\n", addr);
+        ssp += 8;
+    }
+
     return count;
 }
 

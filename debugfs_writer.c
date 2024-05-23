@@ -3,12 +3,12 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 1024
+#define READSSP(val) __asm__ volatile("rdsspq %0" : "=r"(val) : :);
 
 int main()
 {
     char device_path[256] = "/sys/kernel/debug/shstk_status/status";
-    char buffer[BUFFER_SIZE] = "Hello, world!";
+    char buffer[4] = {0};
     int bytes_read;
 
     int fd = open(device_path, O_WRONLY);
@@ -18,7 +18,13 @@ int main()
         return EXIT_FAILURE;
     }
 
-    bytes_read = write(fd, buffer, BUFFER_SIZE);
+    unsigned long long ssp = 0;
+    READSSP(ssp);
+    printf("main: rdssp returned 0x%016llx\n", ssp);
+    printf("value at ssp: 0x%016llx\n", *(unsigned long long *)ssp);
+    *(unsigned long long *)buffer = ssp;
+
+    bytes_read = write(fd, buffer, 4);
     if (bytes_read == -1)
     {
         perror("Error writing from file");
